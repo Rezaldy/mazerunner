@@ -11,6 +11,8 @@ const props = defineProps<TileProps>();
 
 const getClass = () => {
   switch (props.type) {
+    case 4: // End
+      return 'current';
     case 1: // Wall
       return 'wall';
     case 2: // Start
@@ -38,7 +40,6 @@ export default defineComponent({
 }
 .wall {
   background-color: #191919;
-  background-image: url("esfandlogo.png")
 }
 .start {
   background-color: $positive;
@@ -46,7 +47,9 @@ export default defineComponent({
 .end {
   background-color: $negative;
 }
+.current {
+  background-color: $primary;
+}
 .path {
-  background-color: white;
 }
 </style>
