@@ -7,15 +7,24 @@
         :key="tileIndex"
       />
     </div>
+    <div v-if="commandData.maze.invalidCommandCount">Biggest bozo: {{getMostInvalidCommands().user}} with {{getMostInvalidCommands().count}} bozo command{{getMostInvalidCommands().count > 1 ? 's':''}}.</div>
+    <div v-else>No bozos here!</div>
+
+    <div v-if="commandData.maze.lastCommand.user.length">Last command: <span class="text-weight-bold">{{ commandData.maze.lastCommand.user }}</span>: {{ commandData.maze.lastCommand.command}}</div>
+    <div v-else>No command submitted yet. Use !maze up/down/left/right to move!</div>
   </div>
-  <div v-else id="completed"/>
-  <div>{{ commandData.maze.count }}</div>
+  <div v-else id="completed">
+    <div>{{ commandData.maze.commandCount }} commands executed</div>
+    <div>{{ commandData.maze.invalidCommandCount }} Walls were run into.</div>
+    <div v-if="getMostInvalidCommands()">{{ getMostInvalidCommands().user }} had no idea what they were doing <span class="text-weight-bold">{{getMostInvalidCommands().count}} times</span></div>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { client, prefix } from 'boot/tmi';
-import MazeDirection from 'src/enums/MazeDirection';
-import {reactive} from 'vue';
+import MazeCommand from 'src/enums/MazeCommand';
+import {computed, reactive} from 'vue';
+import InvalidCommandRecord from 'src/interfaces/InvalidCommandRecord';
 
 const matrix = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -55,9 +64,34 @@ matrix[endPosition[1]][endPosition[0]] = 3;
 let currentPosition = reactive(Array.from(startPosition));
 let commandData = reactive({
   maze: {
-    count: 0
+    commandCount: 0,
+    invalidCommandCount: 0,
+    invalidCommands: <InvalidCommandRecord>{
+
+    },
+    lastCommand: {
+      user: '',
+      command: '',
+    },
   }
 });
+
+const incrementInvalidCommandByUser = (username: string | undefined) => {
+  if (!username)
+    return;
+
+  commandData.maze.invalidCommands[username] = commandData.maze.invalidCommands[username] ?
+    commandData.maze.invalidCommands[username] + 1 : 1;
+}
+
+const getMostInvalidCommands = () => {
+  return [...Object.entries(commandData.maze.invalidCommands).map((invalidCommandByUser) => {
+    return {
+      user: invalidCommandByUser[0],
+      count: invalidCommandByUser[1],
+    }
+  }).sort((a, b) => b.count - a.count)].shift();
+}
 
 client.on('message', (channel, tags, message, self) => {
   if (self) return;
@@ -74,8 +108,12 @@ client.on('message', (channel, tags, message, self) => {
 
     // Maze command called
     if (commandName === 'maze') {
+      // Ignore if maze is completed
+      if (currentPosition.toString() === endPosition.toString()) {
+        return;
+      }
       // Check matrix before doing anything
-      if (!matrix.length) {
+      else if (!matrix.length) {
         return;
       } else {
         matrix.forEach((array) => {
@@ -85,54 +123,87 @@ client.on('message', (channel, tags, message, self) => {
           }
         });
       }
-      const commandText = context.join(' ').toLowerCase();
-      if (Object.values(MazeDirection).includes(<MazeDirection>commandText)) {
+
+      const commandText = context[0].toLowerCase();
+      if (Object.values(MazeCommand).includes(<MazeCommand>commandText)) {
         // Command is found and valid, do whatever logic here
         let [xPos, yPos] = [currentPosition[0], currentPosition[1]];
+        commandData.maze.lastCommand.user = <string>tags.username;
+        commandData.maze.lastCommand.command = commandText;
 
         switch (commandText) {
           // UP command
-          case MazeDirection.Up:
+          case MazeCommand.Up:
             /**
              * Don't go out of bounds
              * Don't go into walls
              */
             if (yPos === 0 || matrix[yPos - 1][xPos] === 1) {
+              commandData.maze.invalidCommandCount++;
+              incrementInvalidCommandByUser(tags.username);
               break;
             }
             yPos--;
             break;
           // DOWN command
-          case MazeDirection.Down:
+          case MazeCommand.Down:
             /**
              * Don't go out of bounds
              * Don't go into walls
              */
             if (yPos === matrix.length - 1 || matrix[yPos + 1][xPos] === 1) {
+              commandData.maze.invalidCommandCount++;
+              incrementInvalidCommandByUser(tags.username);
               break;
             }
-            yPos = yPos + 1;
+            yPos++;
+            break;
+          // LEFT command
+          case MazeCommand.Left:
+            if (xPos === 0 || matrix[yPos][xPos - 1] === 1) {
+              commandData.maze.invalidCommandCount++;
+              if(tags.username) {
+                incrementInvalidCommandByUser(tags.username);
+              }
+              break;
+            }
+            xPos--;
             break;
           // RIGHT command
-          case MazeDirection.Right:
+          case MazeCommand.Right:
             if (xPos === matrix.length - 1 || matrix[yPos][xPos + 1] === 1) {
+              commandData.maze.invalidCommandCount++;
+              incrementInvalidCommandByUser(tags.username);
               break;
             }
             xPos++;
             break;
-          // LEFT command
-          case MazeDirection.Left:
-            if (xPos === 0 || matrix[yPos][xPos - 1] === 1) {
-              break;
+          case MazeCommand.Restart:
+            const badges = tags.badges ?? {};
+            if (badges.broadcaster || badges.moderator) {
+              currentPosition = Array.from(startPosition);
+              commandData.maze = {
+                commandCount: 0,
+                invalidCommandCount: 0,
+                invalidCommands: {
+
+                },
+                lastCommand: {
+                  user: '',
+                  command: '',
+                },
+              }
             }
-            xPos--;
+            return;
+          default:
             break;
         }
 
         // Set new position
         [currentPosition[0], currentPosition[1]] = [xPos, yPos];
+
         // Increment command count
-        commandData.maze.count++;
+        commandData.maze.commandCount++;
       }
     }
   }
