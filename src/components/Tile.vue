@@ -38,7 +38,6 @@ export default defineComponent({
 }
 .wall {
   background-color: #191919;
-  background-image: url("esfandlogo.png")
 }
 .start {
   background-color: $positive;
@@ -47,6 +46,6 @@ export default defineComponent({
   background-color: $negative;
 }
 .path {
-  background-color: white;
+  background-color: transparent;
 }
 </style>

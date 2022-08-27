@@ -48,6 +48,10 @@ export default defineComponent({
 #matrix {
   display:inline-block;
   border: 1px solid black;
+  background-image: url("src/assets/esfandlogo.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80%;
 }
 
 .matrixRow {
