@@ -1,7 +1,7 @@
 <template>
   <div id="matrix">
-    <div class="matrixRow" v-for="row in matrix" :key="row">
-      <tile v-for="tile in row" :type="tile" :key="tile" />
+    <div class="matrixRow" v-for="(row, rowKey) in matrix" :key="row">
+      <tile v-for="(tile, tileKey) in row" :type="tile" :key="rowKey + '-'+ tileKey" />
     </div>
   </div>
 </template>
