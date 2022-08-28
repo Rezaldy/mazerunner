@@ -39,8 +39,7 @@ import tile from 'components/Tile.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Matrix',
-  components: { tile },
+  name: 'Matrix'
 });
 </script>
 
