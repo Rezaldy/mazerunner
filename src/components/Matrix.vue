@@ -35,7 +35,6 @@ const matrix = [
 </script>
 
 <script lang="ts">
-import tile from 'components/Tile.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
