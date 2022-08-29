@@ -1,7 +1,7 @@
 <template>
   <div id="matrix">
     <div class="matrixRow" v-for="(row, rowKey) in matrix" :key="row">
-      <tile v-for="(tile, tileKey) in row" :type="tile" :key="rowKey + '-'+ tileKey" />
+      <Tile v-for="(tile, tileKey) in row" :type="tile" :key="rowKey + '-'+ tileKey" />
     </div>
   </div>
 </template>
@@ -35,6 +35,7 @@ const matrix = [
 </script>
 
 <script lang="ts">
+import Tile from 'components/Tile.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
