@@ -49,3 +49,6 @@ See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
 
 **Rubber ducks**
 - ttv/Mahcksimus
+
+**Haters**
+- ttv/Nazarein
