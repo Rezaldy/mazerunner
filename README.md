@@ -51,4 +51,4 @@ See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
 - ttv/Mahcksimus
 
 **Haters**
-- ttv/Nazarein
+- ttv/Nazarein (**ReallyMad** he timed me out for testing in offline chat)
