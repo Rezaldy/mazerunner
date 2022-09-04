@@ -46,3 +46,6 @@ See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
 **Volunteer testers**
 - ttv/thatboywilly149
 - ttv/Linkcraft1
+
+**Rubber ducks**
+- ttv/Mahcksimus
