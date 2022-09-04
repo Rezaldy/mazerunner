@@ -141,8 +141,8 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: 'ttv/Esfand Maze Runner',
-        short_name: 'ttv/Esfand Maze Runner',
+        name: 'ttv/mizkif Maze Runner',
+        short_name: 'ttv/mizkif Maze Runner',
         description: "A fun maze runner app for Esfand's chat",
         display: 'standalone',
         orientation: 'portrait',

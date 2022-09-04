@@ -1,4 +1,4 @@
-# ttv/Esfand Maze Runner (mazerunner)
+# ttv/mizkif Maze Runner (mazerunner)
 
 A fun maze runner app for Esfand's chat
 
