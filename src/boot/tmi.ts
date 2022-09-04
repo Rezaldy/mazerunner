@@ -33,14 +33,26 @@ client.on('message', (channel, tags, message, self) => {
     // @ts-ignore
     const commandName = context.shift().toLowerCase();
 
-    const commands = ['up', 'down', 'left', 'left'];
+    const commands = [
+      'maze'
+    ];
 
     // Checks if the first message in the command is one of the commands in the array.
     if(commands.includes(commandName)) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       // Command is found and valid, do whatever logic here
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    } else return console.log(`Incoming correct maze command: ${tags.username}: ${message.slice(6)}`);
+
+      if( commandName === 'maze') {
+        const directions = ['up', 'down', 'left', 'right'];
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const direction = context[0].toLowerCase();
+
+        if (!directions.includes(direction)) {
+          console.log(`Incorrect maze direction: ${direction}`);
+        }
+      }
+    } else return console.log(`Incoming incorrect maze command: ${<string> tags.username}: ${message.slice(6)}`);
   } else return;
 })
 
