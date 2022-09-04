@@ -39,3 +39,9 @@ See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
 ### OBS settings
 - http://localhost:8080
 - 550x600 for dimensions
+
+### Special thanks to:
+
+**Volunteer testers**
+- ttv/thatboywilly149
+- ttv/Linkcraft1
