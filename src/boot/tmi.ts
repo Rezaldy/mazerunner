@@ -14,7 +14,7 @@ const client = new tmi.Client({
   connection: {
     reconnect: true,
   },
-  channels: ['RizkyBizniz'],
+  channels: ['esfandtv'],
 });
 
 void client.connect();
