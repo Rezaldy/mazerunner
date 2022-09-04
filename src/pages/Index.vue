@@ -1,7 +1,7 @@
 <template>
   <q-page padding class="flex justify-center items-center">
     <div id="indexpage">
-      <matrix/>
+      <matrix />
     </div>
   </q-page>
 </template>
@@ -12,6 +12,6 @@ import Matrix from 'components/Matrix.vue';
 export default defineComponent({
   // name: 'PageName'
   name: 'Index',
-  components: {Matrix},
+  components: { Matrix },
 });
 </script>

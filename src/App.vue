@@ -10,7 +10,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-body, html {
+body,
+html {
   background: none !important;
   overflow: hidden;
 }
