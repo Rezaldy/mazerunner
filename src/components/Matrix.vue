@@ -1,7 +1,7 @@
 <template>
   <div id="matrix" v-if="currentPosition.toString() !== endPosition.toString()">
     <div class="matrixRow" v-for="(row, rowIndex) in matrix" :key="rowIndex">
-      <tile
+      <Tile
         v-for="(tile, tileIndex) in row"
         :type="getType(tile, rowIndex, tileIndex)"
         :key="tileIndex"
@@ -23,8 +23,9 @@
 <script lang="ts" setup>
 import { client, prefix } from 'boot/tmi';
 import MazeCommand from 'src/enums/MazeCommand';
-import {computed, reactive} from 'vue';
+import {reactive} from 'vue';
 import InvalidCommandRecord from 'src/interfaces/InvalidCommandRecord';
+import Tile from 'components/Tile.vue';
 
 const matrix = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -233,16 +234,6 @@ const isCurrentPosition: (rowIndex: number, tileIndex: number) => boolean = (
 ) => {
   return rowIndex === currentPosition[1] && tileIndex === currentPosition[0];
 };
-</script>
-
-<script lang="ts">
-import tile from 'components/Tile.vue';
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'Matrix',
-  components: { tile },
-});
 </script>
 
 <style scoped>

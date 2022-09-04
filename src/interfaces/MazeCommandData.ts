@@ -1,4 +1,4 @@
-import InvalidCommandByUserRecord from 'src/interfaces/InvalidCommandByUserRecord';
+// import InvalidCommandByUserRecord from 'src/interfaces/InvalidCommandByUserRecord';
 
 export default interface MazeCommandData {
   commandCount: number,
